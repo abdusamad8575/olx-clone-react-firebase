@@ -9,6 +9,7 @@ import {useHistory} from 'react-router-dom'
 function Posts() {
   const { firebase } = useContext(FirebaseContext);
   const [products, setProducts] = useState([]);
+  const [car,setCar] =useState([]);
   const {setPostDetails}=useContext(PostContext)
   const history =useHistory()
   useEffect(() => {
@@ -21,8 +22,18 @@ function Posts() {
       })
       setProducts(allPost);
     })
-
   }, [])
+  useEffect(()=>{
+    firebase.firestore().collection('products').where('category','==','car').get().then((result)=>{
+      const allPost = result.docs.map((product) => {
+        return {
+          ...product.data(),
+          id: product.id
+        }
+      })
+      setCar(allPost);
+    })
+  },[])
   return (
     <div className="postParentDiv">
       <div className="moreView">
@@ -65,25 +76,38 @@ function Posts() {
       </div>
       <div className="recommendations">
         <div className="heading">
-          <span>Fresh recommendations</span>
+          <span>cars only</span>
         </div>
         <div className="cards">
-          <div className="card">
+          {
+            car.map((product)=>{
+              return(
+                <div
+            className="card"
+            onClick={()=>{
+              setPostDetails(product)
+              history.push('/view')
+            }}
+          >
             <div className="favorite">
               <Heart></Heart>
             </div>
             <div className="image">
-              <img src="../../../Images/R15V3.jpg" alt="" />
+              <img src={product.url} alt="" />
             </div>
             <div className="content">
-              <p className="rate">&#x20B9; 250000</p>
-              <span className="kilometer">Two Wheeler</span>
-              <p className="name"> YAMAHA R15V3</p>
+              <p className="rate">&#x20B9; {product.price}</p>
+              <span className="kilometer">{product.category}</span>
+              <p className="name"> {product.name}</p>
             </div>
             <div className="date">
-              <span>10/5/2021</span>
+              <span>{product.createAt}</span>
             </div>
           </div>
+
+              )
+            })
+          }
         </div>
       </div>
     </div>
