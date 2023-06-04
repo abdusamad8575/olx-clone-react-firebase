@@ -49,7 +49,7 @@ function Header() {
             history.push("/login")
           }}>Logout</span>}
 
-        <div className="sellMenu">
+        <div onClick={()=>{history.push('/create')}} className="sellMenu">
           <SellButton></SellButton>
           <div className="sellMenuContent">
             <SellButtonPlus></SellButtonPlus>
