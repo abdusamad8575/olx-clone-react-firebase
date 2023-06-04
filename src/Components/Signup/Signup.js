@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 
 import Logo from '../../olx-logo.png';
-import {FirebaseContext} from '../../store/FirebaseContext'
+import {FirebaseContext} from '../../store/Context'
 import './Signup.css';
 // import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { useHistory } from 'react-router-dom';
@@ -29,6 +29,12 @@ export default function Signup() {
       })
     })
     // console.log(firebase);
+  }
+  const handleLogin =(e)=>{
+    e.preventDefault()
+    history.push("/login")
+
+    
   }
   return (
     <div>
@@ -86,7 +92,7 @@ export default function Signup() {
           <br />
           <button>Signup</button>
         </form>
-        <a>Login</a>
+        <a onClick={handleLogin}>Login</a>
       </div>
     </div>
   );
